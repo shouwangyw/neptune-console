@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.transsnet.vskit</groupId>
+  <artifactId>neptune-console-dao-starter</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <name>neptune-console-dao-starter</name>
+
+  <parent>
+    <artifactId>neptune-console</artifactId>
+    <groupId>com.transsnet.vskit.neptune</groupId>
+    <version>0.0.1</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <!-- gremlin驱动 -->
+    <dependency>
+      <groupId>org.apache.tinkerpop</groupId>
+      <artifactId>gremlin-driver</artifactId>
+      <version>3.4.1</version>
+    </dependency>
+
+    <!-- amazonaws -->
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-core</artifactId>
+      <version>1.11.307</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>amazon-neptune-sigv4-signer</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+
+  </dependencies>
+</project>

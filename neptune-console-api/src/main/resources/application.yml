@@ -1,0 +1,21 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: vskit-neptune-console
+
+aws:
+  neptune:
+    enabled: true
+    cluster-node: vskit-following-server-cluster.cluster-csidlk2hdfqg.eu-west-1.neptune.amazonaws.com
+    cluster-port: 8182
+
+logging:
+  path: /tmp/log
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+    com.transsnet.vskit.neptune: DEBUG
