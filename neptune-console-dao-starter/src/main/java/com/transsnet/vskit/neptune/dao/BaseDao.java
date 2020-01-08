@@ -2,7 +2,6 @@ package com.transsnet.vskit.neptune.dao;
 
 import com.transsnet.vskit.neptune.config.AwsNeptuneAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.RequestOptions;
 import org.apache.tinkerpop.gremlin.driver.Result;
@@ -16,10 +15,13 @@ import org.springframework.util.ObjectUtils;
 
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.Collections.emptyList;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * Neptune操作封装
@@ -86,7 +88,7 @@ public class BaseDao {
      * @return
      */
     protected <T> T queryById(String type, String id) {
-        if (StringUtils.isEmpty(id)) {
+        if (isEmpty(id)) {
             return null;
         }
 
@@ -94,7 +96,7 @@ public class BaseDao {
         ids.add(id);
 
         List<Object> objects = queryByIds(type, ids);
-        if (!ObjectUtils.isEmpty(objects)) {
+        if (isNotEmpty(objects)) {
             return (T) objects.get(0);
         }
         return null;
@@ -108,12 +110,12 @@ public class BaseDao {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <T> List<T> queryByIds(String type, List<String> ids) {
+    public <T> List<T> queryByIds(String type, List<String> ids) {
         String script = buildQueryScriptByIds(type, ids);
 
         List<Result> results = execute(script);
         if (ObjectUtils.isEmpty(results)) {
-            return Collections.emptyList();
+            return emptyList();
         }
         List<T> objects = new ArrayList<>();
         for (Result result : results) {
@@ -160,9 +162,9 @@ public class BaseDao {
      * @param script
      * @return
      */
-    protected List<Result> execute(String script) {
-        if (StringUtils.isEmpty(script)) {
-            return Collections.emptyList();
+    public List<Result> execute(String script) {
+        if (isEmpty(script)) {
+            return emptyList();
         }
         RequestOptions options = RequestOptions.build()
                 .timeout(MAX_TIMEOUT)
@@ -190,7 +192,7 @@ public class BaseDao {
                 log.error("==>> 执行脚本[{}]时出错：{}:{}", printScriptLog(script), e.getMessage(), e.getStackTrace());
             }
         }
-        return Collections.emptyList();
+        return emptyList();
     }
 
     /**
