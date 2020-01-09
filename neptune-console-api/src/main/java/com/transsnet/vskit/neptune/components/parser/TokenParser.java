@@ -1,7 +1,10 @@
-package com.transsnet.vskit.neptune.parser;
+package com.transsnet.vskit.neptune.components.parser;
 
 import com.transsnet.vskit.neptune.model.QueryResult;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static com.transsnet.vskit.neptune.model.QueryResult.Type.*;
 
@@ -17,13 +20,13 @@ public class TokenParser {
     /**
      * 限制执行语句
      */
-    private static final String LIMIT_CODES = "drop()|max()|min()";
+    private static final List<String> BLACK_LIST = Arrays.asList("drop()", "max()", "min()");
 
     private TokenParser() {
     }
 
     public static QueryResult.Type parseType(String code) {
-        validate(code);
+        validateBlack(code);
 
         QueryResult.Type type = OTHER;
         if (code.indexOf(VERTEX_TYPE_PREFIX) == 0) {
@@ -39,10 +42,9 @@ public class TokenParser {
         return type;
     }
 
-    private static void validate(String code) {
-        String[] limitCodes = LIMIT_CODES.split("\\|");
-        for (String limitCode : limitCodes) {
-            if (code.contains(limitCode)) {
+    private static void validateBlack(String code) {
+        for (String s : BLACK_LIST) {
+            if (code.contains(s)) {
                 log.error("该语句执行被限制");
             }
         }

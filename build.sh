@@ -17,3 +17,7 @@ mvn clean install package -Dmaven.test.skip=true
 
 mkdir neptune-console-1.0
 cp -r neptune-console-api/target/neptune-console-api-1.0.0.jar neptune-console-1.0
+
+cd neptune-console-1.0
+mv neptune-console-api-1.0.0.jar neptune-console-dist-1.0.jar
+cd ..

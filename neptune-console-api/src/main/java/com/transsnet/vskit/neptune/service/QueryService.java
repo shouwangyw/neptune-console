@@ -1,10 +1,10 @@
 package com.transsnet.vskit.neptune.service;
 
+import com.transsnet.vskit.neptune.components.GraphResultHandler;
 import com.transsnet.vskit.neptune.components.OriginalResultHandler;
-import com.transsnet.vskit.neptune.components.ParsedResultHandler;
 import com.transsnet.vskit.neptune.dao.BaseDao;
 import com.transsnet.vskit.neptune.model.QueryResult;
-import com.transsnet.vskit.neptune.parser.TokenParser;
+import com.transsnet.vskit.neptune.components.parser.TokenParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.driver.Result;
@@ -29,7 +29,7 @@ public class QueryService {
     @Resource
     private OriginalResultHandler originalResultHandler;
     @Resource
-    private ParsedResultHandler parsedResultHandler;
+    private GraphResultHandler graphResultHandler;
 
     public QueryResult executeQuery(String script) {
         QueryResult queryResult = QueryResult.emptyResult();
@@ -59,7 +59,7 @@ public class QueryService {
         List<Object> data = queryResult.getData();
         if (isNotEmpty(data)) {
             // 对结果数据进行进一步处理，解析为Graph对象信息
-            parsedResultHandler.handle(queryResult, data, null);
+            graphResultHandler.handle(queryResult, data, null);
         }
 
         long endTime = System.currentTimeMillis();
