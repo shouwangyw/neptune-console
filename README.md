@@ -34,14 +34,45 @@ npm install
 
 * 构建：回到项目根目录执行`build.sh`脚本
 
-```
+```bash
 ./build.sh
 ```
 
-* 启动运行：
+```xml
+...
+[INFO] --- spring-boot-maven-plugin:2.1.5.RELEASE:repackage (repackage) @ neptune-console-api ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] neptune-console 0.0.1 .............................. SUCCESS [  0.314 s]
+[INFO] neptune-console-dao-starter 1.0.0 .................. SUCCESS [  3.535 s]
+[INFO] neptune-console-api 1.0.0 .......................... SUCCESS [  4.780 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.901 s
+[INFO] Finished at: 2020-01-09T14:17:48+08:00
+[INFO] ------------------------------------------------------------------------
+```
+
+* 启动运行：项目根目录执行`start.sh`脚本
 
 ```bash
 ./start.sh
+```
+
+```xml
+...
+14:18:40 [main] INFO  o.s.s.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+14:18:40 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+14:18:40 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+14:18:40 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+14:18:40 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+14:18:41 [main] INFO  o.s.b.w.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9999 (http) with context path ''
+14:18:41 [main] INFO  c.t.v.n.VskitNeptuneConsoleApplication - Started VskitNeptuneConsoleApplication in 3.374 seconds (JVM running for 3.751)
+14:18:41 [main] INFO  c.t.v.n.VskitNeptuneConsoleApplication - App running at:
+14:18:41 [main] INFO  c.t.v.n.VskitNeptuneConsoleApplication - ==>> http://localhost:9999/index.html
 ```
 
 * 访问：[http://localhost:9999/index.html](http://localhost:9999/index.html)
