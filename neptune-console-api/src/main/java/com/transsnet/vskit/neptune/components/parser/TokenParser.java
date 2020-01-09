@@ -35,7 +35,7 @@ public class TokenParser {
         if (code.indexOf(EDGE_TYPE_PREFIX) == 0) {
             type = EDGE;
         }
-        if (code.lastIndexOf(PATH_TYPE_SUFFIX) == code.length() - 7) {
+        if (code.lastIndexOf(PATH_TYPE_SUFFIX) != -1) {
             type = PATH;
         }
 

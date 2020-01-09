@@ -53,7 +53,6 @@ public class PathTypeConverter implements TypeConverter<Result, Object> {
     @Override
     public void convert2Graph(List<Object> sources, Graph graph) {
         List<MyVertex> myVertices = new ArrayList<>();
-        List<MyEdge> myEdges = new ArrayList<>();
 
         // 用于去重
         List<String> vIds = new ArrayList<>();
@@ -67,7 +66,10 @@ public class PathTypeConverter implements TypeConverter<Result, Object> {
             getEdgeIdsForPath(objects, eIds);
         }
 
-        myEdges.addAll(myEdgeDao.getMyEdges(eIds));
+        List<MyEdge> myEdges = new ArrayList<>(myEdgeDao.getMyEdges(eIds));
+
+        graph.setVertices(myVertices)
+                .setEdges(myEdges);
     }
 
     private Map<String, MyVertex> getAllPathVertices(List<Result> results) {

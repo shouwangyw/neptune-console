@@ -38,9 +38,7 @@ public class MyEdgeDao {
 
     private Map<String, String> getProperties(Edge edge) {
         Map<String, String> properties = new HashMap<>(4);
-        edge.keys().forEach(key -> {
-            properties.put(key, edge.property(key).value().toString());
-        });
+        edge.keys().forEach(key -> properties.put(key, edge.property(key).value().toString()));
 
         return properties;
     }

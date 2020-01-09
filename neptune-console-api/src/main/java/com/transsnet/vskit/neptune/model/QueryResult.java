@@ -6,6 +6,9 @@ import lombok.experimental.Accessors;
 
 import java.util.List;
 
+/**
+ * @author yangwei
+ */
 @Data
 @Accessors(chain = true)
 public class QueryResult {
@@ -17,10 +20,25 @@ public class QueryResult {
     private String message;
     private Graph graph;
 
+    /**
+     * 查询结果类型
+     */
     public enum Type {
+        /**
+         * 顶点
+         */
         VERTEX,
+        /**
+         * 边
+         */
         EDGE,
+        /**
+         * 路径
+         */
         PATH,
+        /**
+         * 其它
+         */
         OTHER,
         ;
     }

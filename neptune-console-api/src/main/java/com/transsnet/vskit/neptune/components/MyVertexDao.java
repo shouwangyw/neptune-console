@@ -34,9 +34,7 @@ public class MyVertexDao {
 
     private Map<String, String> getProperties(Vertex vertex) {
         Map<String, String> properties = new HashMap<>(4);
-        vertex.keys().forEach(key -> {
-            properties.put(key, vertex.property(key).value().toString());
-        });
+        vertex.keys().forEach(key -> properties.put(key, vertex.property(key).value().toString()));
 
         return properties;
     }

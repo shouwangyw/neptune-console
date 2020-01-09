@@ -48,7 +48,6 @@ public class VertexTypeConverter implements TypeConverter<Result, Object> {
     @Override
     public void convert2Graph(List<Object> sources, Graph graph) {
         List<MyVertex> myVertices = new ArrayList<>();
-        List<MyEdge> myEdges = new ArrayList<>();
 
         List<String> vIds = new ArrayList<>();
         for (Object obj : sources) {
@@ -60,7 +59,7 @@ public class VertexTypeConverter implements TypeConverter<Result, Object> {
         }
         List<String> eIds = getEdgeIds(vIds);
 
-        myEdges.addAll(myEdgeDao.getMyEdges(eIds));
+        List<MyEdge> myEdges = new ArrayList<>(myEdgeDao.getMyEdges(eIds));
 
         graph.setVertices(myVertices)
                 .setEdges(myEdges);

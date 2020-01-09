@@ -55,7 +55,7 @@ public abstract class AbstractResultHandler<S, T> {
 
         this.queryResult = queryResult;
         this.sources = sources;
-        this.targets = targets;
+        this.targets = targets == null ? new ArrayList<>() : targets;
 
         handle();
     }
