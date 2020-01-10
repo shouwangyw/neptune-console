@@ -29,6 +29,7 @@ public abstract class AbstractResultHandler<S, T> {
     protected List<T> targets;
 
     protected static final List<TypeConverter> TYPE_CONVERTERS = new ArrayList<>();
+    private static volatile boolean isRegister = false;
 
     @Resource
     private VertexTypeConverter vertexTypeConverter;
@@ -49,15 +50,25 @@ public abstract class AbstractResultHandler<S, T> {
         }
 
         // 注册转换器
-        TYPE_CONVERTERS.add(vertexTypeConverter);
-        TYPE_CONVERTERS.add(edgeTypeConverter);
-        TYPE_CONVERTERS.add(pathTypeConverter);
+        registerConverter();
 
         this.queryResult = queryResult;
         this.sources = sources;
         this.targets = targets == null ? new ArrayList<>() : targets;
 
         handle();
+    }
+
+    private void registerConverter() {
+        if (isRegister) {
+            return;
+        }
+        TYPE_CONVERTERS.clear();
+        TYPE_CONVERTERS.add(vertexTypeConverter);
+        TYPE_CONVERTERS.add(edgeTypeConverter);
+        TYPE_CONVERTERS.add(pathTypeConverter);
+
+        isRegister = true;
     }
 
     /**

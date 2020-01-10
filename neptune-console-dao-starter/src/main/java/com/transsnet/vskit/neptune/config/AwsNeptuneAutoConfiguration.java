@@ -14,6 +14,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
@@ -34,17 +35,17 @@ public class AwsNeptuneAutoConfiguration implements AutoCloseable {
     @Autowired
     private AwsNeptuneProperties properties;
 
-    /**
-     * 初始化创建远程连接操作对象 g
-     *
-     * @return
-     */
-    @Bean
-    public GraphTraversalSource initGraphTraversalSource() {
-        if (g != null) {
-            return g;
+    @PostConstruct
+    public void init() {
+        initGraphTraversalSource();
+        initClient();
+    }
+
+    private void initGraphTraversalSource() {
+        if (properties == null) {
+            return;
         }
-        log.info("==>> initGraphTraversalSource ...");
+        log.info("==>> initGraphTraversalSource start ...");
         Cluster.Builder builder = Cluster.build();
         builder.addContactPoint(properties.getClusterNode());
         builder.port(properties.getClusterPort());
@@ -52,6 +53,33 @@ public class AwsNeptuneAutoConfiguration implements AutoCloseable {
 
         g = AnonymousTraversalSource.traversal()
                 .withRemote(DriverRemoteConnection.using(cluster, DEFAULT_REMOTE_SOURCE_NAME));
+        log.info("==>> initGraphTraversalSource end !!!");
+    }
+
+    private void initClient() {
+        if (properties == null) {
+            return;
+        }
+        log.info("===>> initClient start ...");
+        Cluster.Builder builder = Cluster.build();
+        builder.addContactPoint(properties.getClusterNode());
+        builder.port(properties.getClusterPort());
+        cluster = builder.create();
+        client = cluster.connect();
+        log.info("===>> initClient end !!!");
+    }
+
+    /**
+     * 初始化创建远程连接操作对象 g
+     *
+     * @return
+     */
+    @Bean
+    public GraphTraversalSource getGraphTraversalSource() {
+        if (g != null) {
+            return g;
+        }
+        initGraphTraversalSource();
         return g;
     }
 
@@ -61,16 +89,11 @@ public class AwsNeptuneAutoConfiguration implements AutoCloseable {
      * @return
      */
     @Bean
-    public Client initClient() {
+    public Client getClient() {
         if (client != null && !client.isClosing()) {
             return client;
         }
-        log.info("===>> initClient ...");
-        Cluster.Builder builder = Cluster.build();
-        builder.addContactPoint(properties.getClusterNode());
-        builder.port(properties.getClusterPort());
-        cluster = builder.create();
-        client = cluster.connect();
+        initClient();
         return client;
     }
 

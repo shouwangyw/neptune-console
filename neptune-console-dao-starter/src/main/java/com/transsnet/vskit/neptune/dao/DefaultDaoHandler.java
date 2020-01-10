@@ -19,22 +19,18 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  */
 @Slf4j
 public class DefaultDaoHandler extends AbstractDaoHandler {
-    private boolean isInit = false;
-
     public DefaultDaoHandler() {
     }
 
-    public DefaultDaoHandler(AwsNeptuneAutoConfiguration configuration) {
-        this.configuration = configuration;
-        this.g = configuration.initGraphTraversalSource();
-        this.client = configuration.initClient();
-
-        this.isInit = true;
+    public DefaultDaoHandler(AwsNeptuneAutoConfiguration neptuneAutoConfiguration) {
+        configuration = neptuneAutoConfiguration;
+        g = configuration.getGraphTraversalSource();
+        client = configuration.getClient();
     }
 
     @Override
     public List<Result> execute(String script) {
-        if (isEmpty(script) || !isInit) {
+        if (isEmpty(script) || configuration == null) {
             return emptyList();
         }
         RequestOptions options = RequestOptions.build()
@@ -88,7 +84,7 @@ public class DefaultDaoHandler extends AbstractDaoHandler {
     }
 
     private void init() {
-        g = configuration.initGraphTraversalSource();
-        client = configuration.initClient();
+        g = configuration.getGraphTraversalSource();
+        client = configuration.getClient();
     }
 }

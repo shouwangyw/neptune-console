@@ -74,9 +74,9 @@ public abstract class AbstractDaoHandler implements DaoHandler {
      */
     private static final String TYPE_EDGE = "E";
 
-    protected AwsNeptuneAutoConfiguration configuration;
-    protected GraphTraversalSource g;
-    protected Client client;
+    protected static AwsNeptuneAutoConfiguration configuration;
+    protected static GraphTraversalSource g;
+    protected static Client client;
 
     @Override
     public List<Vertex> queryVertexByIds(List<String> ids) {
