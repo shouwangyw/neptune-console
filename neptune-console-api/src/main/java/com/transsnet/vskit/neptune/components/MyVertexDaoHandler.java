@@ -1,13 +1,11 @@
 package com.transsnet.vskit.neptune.components;
 
-import com.transsnet.vskit.neptune.dao.BaseDao;
+import com.transsnet.vskit.neptune.dao.DefaultDaoHandler;
 import com.transsnet.vskit.neptune.model.graph.MyVertex;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 import static com.transsnet.vskit.neptune.model.QueryResult.Type.VERTEX;
@@ -17,12 +15,7 @@ import static com.transsnet.vskit.neptune.model.QueryResult.Type.VERTEX;
  * @date 2020-01-09 11:35
  */
 @Slf4j
-@Component
-public class MyVertexDao {
-    private static final String TYPE_VERTEX = "V";
-
-    @Resource
-    private BaseDao baseDao;
+public class MyVertexDaoHandler extends DefaultDaoHandler {
 
     public MyVertex getMyVertex(Vertex vertex) {
         return new MyVertex()
@@ -40,7 +33,7 @@ public class MyVertexDao {
     }
 
     public List<MyVertex> getMyVertices(List<String> vertexIds) {
-        List<Vertex> vertices = baseDao.queryByIds(TYPE_VERTEX, vertexIds);
+        List<Vertex> vertices = queryVertexByIds(vertexIds);
         if (ObjectUtils.isEmpty(vertices)) {
             return Collections.emptyList();
         }

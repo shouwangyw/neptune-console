@@ -105,7 +105,7 @@ export function execute(card) {
                     result: {
                         message: {
                             title: responseStatus.statusText,
-                            detailedMsg: err.response.message
+                            detailedMsg: !err.response ? '' : err.response.message
                         }
                     }
                 };

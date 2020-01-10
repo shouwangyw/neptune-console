@@ -1,5 +1,7 @@
 package com.transsnet.vskit.neptune.config;
 
+import com.transsnet.vskit.neptune.dao.DaoHandler;
+import com.transsnet.vskit.neptune.dao.DefaultDaoHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
@@ -7,11 +9,12 @@ import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
 import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PreDestroy;
 
 /**
  * @author yangwei
@@ -19,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@ConditionalOnClass
+@ConditionalOnProperty(name = "aws.neptune.enabled", havingValue = "true", matchIfMissing = false)
 @EnableConfigurationProperties(AwsNeptuneProperties.class)
 public class AwsNeptuneAutoConfiguration implements AutoCloseable {
     private static final String DEFAULT_REMOTE_SOURCE_NAME = "g";
@@ -32,17 +35,16 @@ public class AwsNeptuneAutoConfiguration implements AutoCloseable {
     private AwsNeptuneProperties properties;
 
     /**
-     * 获取远程连接操作对象 g
+     * 初始化创建远程连接操作对象 g
      *
      * @return
      */
     @Bean
-    @ConditionalOnProperty(name = "aws.neptune.enabled", havingValue = "true")
-    public GraphTraversalSource getGraphTraversalSource() {
+    public GraphTraversalSource initGraphTraversalSource() {
         if (g != null) {
             return g;
         }
-        log.info("==>> getGraphTraversalSource ...");
+        log.info("==>> initGraphTraversalSource ...");
         Cluster.Builder builder = Cluster.build();
         builder.addContactPoint(properties.getClusterNode());
         builder.port(properties.getClusterPort());
@@ -54,17 +56,16 @@ public class AwsNeptuneAutoConfiguration implements AutoCloseable {
     }
 
     /**
-     * 获取客户端操作对象
+     * 初始化创建客户端操作对象
      *
      * @return
      */
     @Bean
-    @ConditionalOnProperty(name = "aws.neptune.enabled", havingValue = "true")
-    public Client getClient() {
+    public Client initClient() {
         if (client != null && !client.isClosing()) {
             return client;
         }
-        log.info("===>> getClient ...");
+        log.info("===>> initClient ...");
         Cluster.Builder builder = Cluster.build();
         builder.addContactPoint(properties.getClusterNode());
         builder.port(properties.getClusterPort());
@@ -73,8 +74,22 @@ public class AwsNeptuneAutoConfiguration implements AutoCloseable {
         return client;
     }
 
+    /**
+     * 初始化创建图数据库操作对象
+     *
+     * @return
+     */
+    @Bean
+    public DaoHandler initBaseDao() {
+        return new DefaultDaoHandler(this);
+    }
+
+    @PreDestroy
     @Override
-    public void close() {
+    public void close() throws Exception {
+        if (g != null) {
+            g.close();
+        }
         if (client != null) {
             client.close();
         }

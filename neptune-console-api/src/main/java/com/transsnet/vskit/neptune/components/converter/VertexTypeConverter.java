@@ -1,7 +1,7 @@
 package com.transsnet.vskit.neptune.components.converter;
 
-import com.transsnet.vskit.neptune.components.MyEdgeDao;
-import com.transsnet.vskit.neptune.components.MyVertexDao;
+import com.transsnet.vskit.neptune.components.MyEdgeDaoHandler;
+import com.transsnet.vskit.neptune.components.MyVertexDaoHandler;
 import com.transsnet.vskit.neptune.model.QueryResult;
 import com.transsnet.vskit.neptune.model.graph.Graph;
 import com.transsnet.vskit.neptune.model.graph.MyEdge;
@@ -12,7 +12,6 @@ import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,10 +26,6 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 @Slf4j
 @Component
 public class VertexTypeConverter implements TypeConverter<Result, Object> {
-    @Resource
-    private MyVertexDao myVertexDao;
-    @Resource
-    private MyEdgeDao myEdgeDao;
 
     @Override
     public boolean isType(QueryResult.Type type) {
@@ -41,7 +36,7 @@ public class VertexTypeConverter implements TypeConverter<Result, Object> {
     public void convert(List<Result> sources, List<Object> targets) {
         for (Result result : sources) {
             Vertex vertex = result.getVertex();
-            targets.add(myVertexDao.getMyVertex(vertex));
+            targets.add(new MyVertexDaoHandler().getMyVertex(vertex));
         }
     }
 
@@ -59,7 +54,7 @@ public class VertexTypeConverter implements TypeConverter<Result, Object> {
         }
         List<String> eIds = getEdgeIds(vIds);
 
-        List<MyEdge> myEdges = new ArrayList<>(myEdgeDao.getMyEdges(eIds));
+        List<MyEdge> myEdges = new ArrayList<>(new MyEdgeDaoHandler().getMyEdges(eIds));
 
         graph.setVertices(myVertices)
                 .setEdges(myEdges);

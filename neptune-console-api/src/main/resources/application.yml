@@ -9,7 +9,7 @@ spring:
 
 aws:
   neptune:
-    enabled: true
+#    enabled: true
     cluster-node: vskit-following-server-cluster.cluster-csidlk2hdfqg.eu-west-1.neptune.amazonaws.com
     cluster-port: 8182
 

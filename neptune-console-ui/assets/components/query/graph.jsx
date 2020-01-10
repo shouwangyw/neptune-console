@@ -249,7 +249,7 @@ class Graph extends React.Component {
                     this.updateGroups(data.graph.groups);
                 })
                 .catch(err => {
-                    this.props.alertMessage(err.response.message, 'danger');
+                    this.props.alertMessage(!err.response ? '' : err.response.message, 'danger');
                 });
         }
 

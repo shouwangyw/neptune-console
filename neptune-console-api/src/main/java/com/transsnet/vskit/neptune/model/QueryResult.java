@@ -44,6 +44,7 @@ public class QueryResult {
     }
 
     public static QueryResult emptyResult() {
-        return new QueryResult();
+        return new QueryResult()
+                .setGraph(new Graph());
     }
 }

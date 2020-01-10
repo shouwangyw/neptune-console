@@ -1,7 +1,7 @@
 package com.transsnet.vskit.neptune.components.converter;
 
-import com.transsnet.vskit.neptune.components.MyEdgeDao;
-import com.transsnet.vskit.neptune.components.MyVertexDao;
+import com.transsnet.vskit.neptune.components.MyEdgeDaoHandler;
+import com.transsnet.vskit.neptune.components.MyVertexDaoHandler;
 import com.transsnet.vskit.neptune.model.QueryResult;
 import com.transsnet.vskit.neptune.model.graph.Graph;
 import com.transsnet.vskit.neptune.model.graph.MyEdge;
@@ -14,7 +14,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.Path;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +29,6 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 @Slf4j
 @Component
 public class PathTypeConverter implements TypeConverter<Result, Object> {
-    @Resource
-    private MyVertexDao myVertexDao;
-    @Resource
-    private MyEdgeDao myEdgeDao;
-
     @Override
     public boolean isType(QueryResult.Type type) {
         return PATH == type;
@@ -66,7 +60,7 @@ public class PathTypeConverter implements TypeConverter<Result, Object> {
             getEdgeIdsForPath(objects, eIds);
         }
 
-        List<MyEdge> myEdges = new ArrayList<>(myEdgeDao.getMyEdges(eIds));
+        List<MyEdge> myEdges = new ArrayList<>(new MyEdgeDaoHandler().getMyEdges(eIds));
 
         graph.setVertices(myVertices)
                 .setEdges(myEdges);
@@ -85,7 +79,7 @@ public class PathTypeConverter implements TypeConverter<Result, Object> {
             }
         }
 
-        List<MyVertex> myVertices = myVertexDao.getMyVertices(vIds);
+        List<MyVertex> myVertices = new MyVertexDaoHandler().getMyVertices(vIds);
 
         Map<String, MyVertex> vertexMap = new HashMap<>(16);
         for (MyVertex myVertex : myVertices) {
