@@ -12,7 +12,6 @@ import lombok.val;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.process.traversal.Path;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
  * @date 2020-01-09 10:45
  */
 @Slf4j
-@Component
 public class PathTypeConverter implements TypeConverter<Result, Object> {
     @Override
     public boolean isType(QueryResult.Type type) {

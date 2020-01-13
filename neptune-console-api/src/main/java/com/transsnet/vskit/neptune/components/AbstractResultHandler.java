@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +29,6 @@ public abstract class AbstractResultHandler<S, T> {
 
     protected static final List<TypeConverter> TYPE_CONVERTERS = new ArrayList<>();
     private static volatile boolean isRegister = false;
-
-    @Resource
-    private VertexTypeConverter vertexTypeConverter;
-    @Resource
-    private EdgeTypeConverter edgeTypeConverter;
-    @Resource
-    private PathTypeConverter pathTypeConverter;
 
     /**
      * 处理方法
@@ -64,9 +56,9 @@ public abstract class AbstractResultHandler<S, T> {
             return;
         }
         TYPE_CONVERTERS.clear();
-        TYPE_CONVERTERS.add(vertexTypeConverter);
-        TYPE_CONVERTERS.add(edgeTypeConverter);
-        TYPE_CONVERTERS.add(pathTypeConverter);
+        TYPE_CONVERTERS.add(new VertexTypeConverter());
+        TYPE_CONVERTERS.add(new EdgeTypeConverter());
+        TYPE_CONVERTERS.add(new PathTypeConverter());
 
         isRegister = true;
     }

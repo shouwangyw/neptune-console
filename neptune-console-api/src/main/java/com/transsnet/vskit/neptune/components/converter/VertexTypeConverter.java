@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import static org.apache.commons.lang3.ObjectUtils.isEmpty;
  * @date 2020-01-09 09:27
  */
 @Slf4j
-@Component
 public class VertexTypeConverter implements TypeConverter<Result, Object> {
 
     @Override

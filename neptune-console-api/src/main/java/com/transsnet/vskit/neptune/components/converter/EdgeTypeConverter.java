@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import static com.transsnet.vskit.neptune.model.QueryResult.Type.EDGE;
  * @date 2020-01-09 09:27
  */
 @Slf4j
-@Component
 public class EdgeTypeConverter implements TypeConverter<Result, Object> {
     @Override
     public boolean isType(QueryResult.Type type) {
