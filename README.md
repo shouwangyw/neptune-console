@@ -2,7 +2,7 @@
 
 ## 简介
 
-利用百度开源Huge Graph的前端模块实现Aws Neptune图数据库的可视化操作控制台
+整合百度开源Huge Graph的前端模块实现Aws Neptune图数据库的可视化操作控制台
 
 - neptune-console-api：neptune操作控制台API
 - neptune-console-dao-starter：neptune数据访问层封装
