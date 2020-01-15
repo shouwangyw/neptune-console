@@ -19,6 +19,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  */
 @Slf4j
 public class DefaultDaoHandler extends AbstractDaoHandler {
+    private static final String ALREADY_EXISTS = "already exists";
+
     public DefaultDaoHandler() {
     }
 
@@ -53,7 +55,7 @@ public class DefaultDaoHandler extends AbstractDaoHandler {
                 retryExecute(script);
             }
         } catch (Exception e) {
-            if (e.getMessage().contains("already exists")) {
+            if (e.getMessage().contains(ALREADY_EXISTS)) {
                 log.info("==>> 重复插入：{}", printScriptLog(script));
             } else {
                 log.error("==>> 执行脚本[{}]时出错：{}:{}", printScriptLog(script), e.getMessage(), e.getStackTrace());
@@ -83,7 +85,7 @@ public class DefaultDaoHandler extends AbstractDaoHandler {
         }
     }
 
-    private void init() {
+    private static void init() {
         g = configuration.getGraphTraversalSource();
         client = configuration.getClient();
     }
