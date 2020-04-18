@@ -28,9 +28,8 @@ import javax.annotation.PreDestroy;
 public class AwsNeptuneAutoConfiguration implements AutoCloseable {
     private static final String DEFAULT_REMOTE_SOURCE_NAME = "g";
 
-    private Cluster cluster;
-    private Client client;
     private GraphTraversalSource g;
+    private Client client;
 
     @Autowired
     private AwsNeptuneProperties properties;
@@ -45,28 +44,30 @@ public class AwsNeptuneAutoConfiguration implements AutoCloseable {
         if (properties == null) {
             return;
         }
+        long startTime = System.currentTimeMillis();
         log.info("==>> initGraphTraversalSource start ...");
-        Cluster.Builder builder = Cluster.build();
-        builder.addContactPoint(properties.getClusterNode());
-        builder.port(properties.getClusterPort());
-        cluster = builder.create();
-
         g = AnonymousTraversalSource.traversal()
-                .withRemote(DriverRemoteConnection.using(cluster, DEFAULT_REMOTE_SOURCE_NAME));
-        log.info("==>> initGraphTraversalSource end !!!");
+                .withRemote(DriverRemoteConnection.using(getCluster(), DEFAULT_REMOTE_SOURCE_NAME));
+        long endTime = System.currentTimeMillis();
+        log.info("==>> initGraphTraversalSource end !!! 耗时 {} ms", endTime - startTime);
     }
 
     private void initClient() {
         if (properties == null) {
             return;
         }
+        long startTime = System.currentTimeMillis();
         log.info("===>> initClient start ...");
+        client = getCluster().connect();
+        long endTime = System.currentTimeMillis();
+        log.info("===>> initClient end !!! 耗时 {} ms", endTime - startTime);
+    }
+
+    private Cluster getCluster() {
         Cluster.Builder builder = Cluster.build();
         builder.addContactPoint(properties.getClusterNode());
         builder.port(properties.getClusterPort());
-        cluster = builder.create();
-        client = cluster.connect();
-        log.info("===>> initClient end !!!");
+        return builder.create();
     }
 
     /**
