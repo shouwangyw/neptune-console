@@ -19,9 +19,9 @@
 * 源码下载：
 
 ```bash
-git clone https://github.com/transsnet/neptune-console.git
+git clone https://github.com/shouwangyw/neptune-console.git
 # 或者
-git clone git@github.com:transsnet/neptune-console.git
+git clone git@github.com:shouwangyw/neptune-console.git
 ```
 
 * 进入项目根目录 `neptune-console`
